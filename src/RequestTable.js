@@ -5,34 +5,41 @@ class RequestTable extends Component {
     
     constructor(props) {
         super(props);
-        this.state = {tableData:[
-            {
-            rowData: [
-                'Data 1',
-                'Data 2',
-                'Data 3',
-                'Data 4'
-            ]
-            },
-            {
-            rowData: [
-                'Data 5',
-                'Data 6',
-                'Data 7',
-                'Data 8'
-            ]
-            }
-        ]};
+        this.state = {tableData:[]};
+    }
+
+    componentWillMount()  {
+        // fetch('/api/requests')
+        // .then(response => response.json())
+        // .then(data => this.convertApiData(data))
+        // .then(convertedData => this.setState({ "tableData": convertedData }));
+    }
+
+    convertApiData(data) {
+        return new Promise(function(resolve, reject) {
+            
+            var convertedData = [];
+            var request = {};
+            data.forEach(element => {
+                request.rowData = [];
+                request.rowData.push(element.Trkorr);
+                request.rowData.push(element.As4user);
+                request.rowData.push(element.As4date);
+                request.rowData.push(element.As4time);
+                convertedData.push(request);
+            });
+            resolve(convertedData);
+          });
     }
 
     render() {
         return (
             <Table
             headers={[
-                'Column Header 1',
-                'Column Header 2',
-                'Column Header 3',
-                'Column Header 4'
+                'Request',
+                'User',
+                'Date',
+                'Time'
             ]}
             tableData={this.state.tableData}
             />

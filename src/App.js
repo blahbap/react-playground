@@ -3,7 +3,6 @@ import React, {Component} from 'react';
 import MyShellbar from './MyShellbar';
 import RequestTable from './RequestTable';
 
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -24,8 +23,7 @@ class App extends Component {
                 <RequestTable />
               </main>
             </div>
-          </div>
-          
+          </div>          
         </div>
       )
     
