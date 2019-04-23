@@ -1,9 +1,51 @@
 import React, {Component} from 'react';
 import MyShellbar from './MyShellbar';
 import { FormFieldset, FormInput, FormItem, FormLabel, FormLegend, FormMessage, FormRadioGroup, FormRadioItem, FormSelect, FormSet, FormTextarea } from 'fundamental-react/lib/Forms';
-
+import { Button, ButtonGroup } from 'fundamental-react/lib/Button';
 
 class Login extends Component {
+
+    constructor(props) {
+        super(props);
+        
+        this.state = {
+            user: "",
+            password: ""
+          };    
+        
+        // This binding is necessary to make `this` work in the callback
+        this.handleLogin = this.handleLogin.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+
+      }
+
+    handleLogin(event) {
+        let url = '/sap/bc/login/login';
+        let username = this.state.user; 
+        let password = this.state.password;
+        
+        let headers = new Headers();
+        
+        //headers.append('Content-Type', 'text/json');
+        headers.set('Authorization', 'Basic ' + btoa(username + ":" + password));
+        
+        fetch(url, {method:'GET',
+                headers: headers,
+                //credentials: 'user:passwd'
+               })
+        .then(response => console.log(response))
+        //.done();
+        
+        function parseJSON(response) {
+            return response.json()
+        }
+    }
+
+    handleChange(event) {
+        this.setState({
+          [event.target.id]: event.target.value
+        });
+      }
 
     render() {
         return (
@@ -15,32 +57,39 @@ class Login extends Component {
               <div className="fd-app">
                 <main className="fd-app__main fd-has-padding-medium">
                     <div className="fd-has-padding-medium">
-                        <FormSet>
-                            <FormItem>
-                            <FormLabel
-                                htmlFor="input-2"
-                                required>
-                            User name
-                            </FormLabel>
-                            <FormInput
-                                id="input-2"
-                                placeholder="Field placeholder text"
-                                type="text"/>
-                            </FormItem>
-                        </FormSet>
-                        <FormSet>
-                            <FormItem>
-                            <FormLabel
-                                htmlFor="input-3"
-                                required>
-                            Password
-                            </FormLabel>
-                            <FormInput
-                                id="input-3"
-                                placeholder="Field placeholder text"
-                                type="password"/>
-                            </FormItem>
-                        </FormSet>
+                        <div className="fd-container fd-container--centered fd-col--3 fd-col--shift-4">
+                            <FormSet>
+                                <FormItem>
+                                <FormLabel
+                                    htmlFor="user"
+                                    required>
+                                User name
+                                </FormLabel>
+                                <FormInput                                
+                                    id="user"
+                                    type="text"
+                                    onChange={this.handleChange}
+                                    value={this.state.user}/>
+                                </FormItem>
+                            </FormSet>
+                            <FormSet>
+                                <FormItem>
+                                <FormLabel
+                                    htmlFor="password"
+                                    required>
+                                Password
+                                </FormLabel>
+                                <FormInput
+                                    id="password"
+                                    onChange={this.handleChange}
+                                    type="password"/>
+                                </FormItem>
+                            </FormSet>
+                            <Button 
+                                onClick={this.handleLogin}>
+                                Login
+                            </Button>
+                        </div>
                     </div>
                 </main>
               </div>

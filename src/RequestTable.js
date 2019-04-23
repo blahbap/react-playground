@@ -9,10 +9,10 @@ class RequestTable extends Component {
     }
 
     componentWillMount()  {
-        // fetch('/api/requests')
-        // .then(response => response.json())
-        // .then(data => this.convertApiData(data))
-        // .then(convertedData => this.setState({ "tableData": convertedData }));
+        fetch("/sap/opu/odata/sap/ZCA_CTS_TRANSPORT_SRV/RequestSet?sap-client=205&$skip=0&$top=20&$orderby=Change desc&$filter=As4date gt datetime'2019-01-15T14:26:11.540' and As4user eq '906575'&$format=json")
+        .then(response => response.json())
+        .then(data => this.convertApiData(data))
+        .then(convertedData => this.setState({ "tableData": convertedData }));
     }
 
     convertApiData(data) {
@@ -20,7 +20,7 @@ class RequestTable extends Component {
             
             var convertedData = [];
             var request = {};
-            data.forEach(element => {
+            data.d.results.forEach(element => {
                 request.rowData = [];
                 request.rowData.push(element.Trkorr);
                 request.rowData.push(element.As4user);
